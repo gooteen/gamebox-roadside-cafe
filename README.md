@@ -1,2 +1,2 @@
 # gamebox-roadside-cafe
-A game box test case repo
+A gamebox practice test case
