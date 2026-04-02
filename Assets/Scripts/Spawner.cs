@@ -23,6 +23,15 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    public bool TryTakeItem()
+    {
+        var slot = _slots.FirstOrDefault(s => !s.IsFree);
+        if (slot == null) return false;
+
+        Destroy(slot.currentObject);
+        return true;
+    }
+
     void TrySpawn()
     {
         // Найти свободные слоты
