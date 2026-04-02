@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterAnimationController : MonoBehaviour
 {
     [SerializeField] private int _numberOfSlices = 8;
+    [SerializeField] private float _staticThreshold = 0.1f;
 
     // 8-directional movement
 
@@ -25,7 +26,7 @@ public class CharacterAnimationController : MonoBehaviour
     public void AnimateDirection(Vector2 direction)
     {
         string[] _directionArray = null;
-        if (direction.magnitude == 0)
+        if (direction.magnitude <= _staticThreshold)
         {
             _directionArray = _staticDirections;
         }
