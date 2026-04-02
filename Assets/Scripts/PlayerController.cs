@@ -65,11 +65,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void PickUp(GameObject objectToPick)
+    public void PickUp(GameObject objectToPick, GameObject objectToDestroy)
     {
         if (_objectInInventory == null)
         {
             _objectInInventory = objectToPick;
+            Destroy(objectToDestroy);
         }
     }
 

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Scene Prefab Catalog
   m_EditorClassIdentifier: 
   cratePrefab: {fileID: 8175588023196056120, guid: 687e4f3845aaca64c9ef3a40d452dc35, type: 3}
+  foodBagPrefab: {fileID: 2131385415535143476, guid: 117805283bd9d8940a6bdc3fb68efef5, type: 3}

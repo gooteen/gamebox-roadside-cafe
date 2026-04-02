@@ -6,4 +6,5 @@ using UnityEngine;
 public class ScenePrefabCatalogSO : ScriptableObject
 {
     public GameObject cratePrefab;
+    public GameObject foodBagPrefab;
 }
