@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cratePrefab: {fileID: 8175588023196056120, guid: 687e4f3845aaca64c9ef3a40d452dc35, type: 3}
   foodBagPrefab: {fileID: 2131385415535143476, guid: 117805283bd9d8940a6bdc3fb68efef5, type: 3}
+  rubbishPrefab: {fileID: 4151086543832757094, guid: 10d30a95f2d9bf74b9aef438e3329bd3, type: 3}
+  trashBagRegularPrefab: {fileID: 6661466129529341542, guid: 69ca4c2b759a069488dca6786f885d52, type: 3}
+  trashBagOrganicPrefab: {fileID: 2472470687554348729, guid: e6da7cd52b63d8548a144e750fd144b7, type: 3}
+  trashBagPaperPrefab: {fileID: 1828266208827093098, guid: ed41bdcd3bfea3049a49eb24609484ad, type: 3}
+  trashBagPlasticPrefab: {fileID: 8686714078615956529, guid: 55d684d2734728443bbe11825ecbc179, type: 3}

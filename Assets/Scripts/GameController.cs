@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GameController : MonoBehaviour
 {
@@ -12,21 +13,46 @@ public class GameController : MonoBehaviour
     [SerializeField] private int _currentMoney;
     [SerializeField] private int _moneyCheckpoint; //  оличество денег в начале текущего круга
 
-    public bool _isPurifierBuilt;
-    public GameObject _purifier;
+    public event System.Action<float> OnPollutionChanged;
 
-    public bool _isTrashBinBuilt;
-    public GameObject _trashBin;
+    public float decompositionCost;
+    public float foodProductionCost;
 
-    public bool _isRecycleTrashBinBuilt;
-    public GameObject _recycleTrashBin;
+    public int purifierPrice;
+    public int regularTrashBinPrice;
+    public int recycleTrashBinPrice;
 
-    public Transform _benchPoint;
-    public Transform _exitPoint;
+    public float cratePollutionLevel;
+    public float groundPollutionLevel;
 
-    public Spawner _sellingPoint;
+    public float squirellPollutionLevel;
+    public float treePollutionLevel;
+
+    public float trashCollectionRate;
+    public int regularTrashBagCollectionPrice;
+    public int recycleTrashBagCollectionPrice;
+
+    public int moneyPerServing;
+    public int moneyPerCrate;
+
+    public float rubbishTimeToDecompose;
+    public float bagTimeToDecompose;
+    
+    public bool isPurifierBuilt;
+
+    public bool isTrashBinBuilt;
+    public Spawner trashBin;
+
+    public bool isRecycleTrashBinBuilt;
+    public Spawner recycleTrashBin;
+
+    public Transform benchPoint;
+    public Transform exitPoint;
+
+    public Spawner sellingPoint;
 
     [SerializeField] private ScenePrefabCatalogSO _scenePrefabCatalog;
+    [SerializeField] private Tilemap _groundTilemap;
 
     public float CurrentPollution
     {
@@ -36,6 +62,9 @@ public class GameController : MonoBehaviour
             _currentPollution = value;
             if (_currentPollution < 0)
                 _currentPollution = 0;
+            
+            _groundTilemap.color = new Color(_groundTilemap.color.r, (100f - _currentPollution) / 100f, _groundTilemap.color.b, _groundTilemap.color.a);
+            OnPollutionChanged?.Invoke(_currentPollution);
         }
     }
 

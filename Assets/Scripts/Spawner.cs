@@ -3,24 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-// сделать гибко настраиваемым для разных типов спавнеров
+public enum SpawnMode {
+    TimerBased,
+    ValueBased
+}
+public enum SpawnerType
+{
+    Kitchen,
+    Garden,
+    Other
+}
+
+
+// сделать наследование позже?
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private SpawnSlot[] _slots; 
-    [SerializeField] private GameObject _prefab;
+    [SerializeField] private GameObject[] _prefabs;
+    [SerializeField] private SpawnMode _mode;
+    [SerializeField] private SpawnerType _type;
     [SerializeField] private float _spawnInterval = 5f;
+    [SerializeField] private int _counterValueForSpawn = 5;
 
-    private float timer;
+    private float _timer;
+    private int _rubbishCounter;
 
-    void Update()
+    public int RubbishCounter
     {
-        timer += Time.deltaTime;
-
-        if (timer >= _spawnInterval)
-        {
-            TrySpawn();
-            timer = 0f;
+        get { return _rubbishCounter; }
+        set 
+        { 
+            _rubbishCounter = value; 
+            if (_rubbishCounter >= _counterValueForSpawn)
+            {
+                _rubbishCounter = 0;
+                TrySpawn();
+            }
         }
+    }
+
+    public int BagCount
+    {
+        get { return _slots.Where(s => !s.IsFree).ToList().Count; }
     }
 
     public bool TryTakeItem()
@@ -32,23 +56,42 @@ public class Spawner : MonoBehaviour
         return true;
     }
 
+    public void ClearSlots()
+    {
+        foreach (var slot in _slots)
+        {
+            if (slot.currentObject != null)
+                Destroy(slot.currentObject);
+            slot.currentObject = null;
+        }
+    }
+
     void TrySpawn()
     {
-        // Найти свободные слоты
-        var freeSlots = _slots.Where(s => s.IsFree).ToList();
+        if (_type != SpawnerType.Garden || GameController.Instance.CurrentPollution <= GameController.Instance.cratePollutionLevel)
+        {
+            // Найти свободные слоты
+            var freeSlots = _slots.Where(s => s.IsFree).ToList();
 
-        if (freeSlots.Count == 0)
-            return;
+            if (freeSlots.Count == 0)
+                return;
 
-        // Выбрать случайный свободный слот
-        var slot = freeSlots[Random.Range(0, freeSlots.Count)];
-
-        SpawnInSlot(slot);
+            // Выбрать случайный свободный слот
+            var slot = freeSlots[Random.Range(0, freeSlots.Count)];
+            if (_type == SpawnerType.Kitchen && !GameController.Instance.isPurifierBuilt)
+            {
+                GameController.Instance.CurrentPollution += GameController.Instance.foodProductionCost;
+            }
+            SpawnInSlot(slot);
+        }
     }
 
     void SpawnInSlot(SpawnSlot slot)
     {
-        GameObject obj = Instantiate(_prefab, slot.point.position, Quaternion.identity);
+        int index = Random.Range(0, _prefabs.Length);
+        Debug.Log(index);
+        GameObject prefab = _prefabs[index];
+        GameObject obj = Instantiate(prefab, slot.point.position, Quaternion.identity);
 
         slot.currentObject = obj;
 
@@ -57,6 +100,28 @@ public class Spawner : MonoBehaviour
         if (life != null)
         {
             life.Init(() => slot.currentObject = null);
+        }
+    }
+
+    void Start()
+    {
+        if (_mode == SpawnMode.ValueBased)
+        {
+            _rubbishCounter = 0;
+        }
+    }
+
+    void Update()
+    {
+        if (_mode == SpawnMode.TimerBased)
+        {
+            _timer += Time.deltaTime;
+
+            if (_timer >= _spawnInterval)
+            {
+                TrySpawn();
+                _timer = 0f;
+            }
         }
     }
 }

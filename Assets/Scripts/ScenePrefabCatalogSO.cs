@@ -7,4 +7,9 @@ public class ScenePrefabCatalogSO : ScriptableObject
 {
     public GameObject cratePrefab;
     public GameObject foodBagPrefab;
+    public GameObject rubbishPrefab;
+    public GameObject trashBagRegularPrefab;
+    public GameObject trashBagOrganicPrefab;
+    public GameObject trashBagPaperPrefab;
+    public GameObject trashBagPlasticPrefab;
 }

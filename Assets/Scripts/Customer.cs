@@ -13,6 +13,8 @@ public enum CustomerState
     GoingToTrashBin
 }
 
+// Вынести харкдод в GameController
+
 public class Customer : MonoBehaviour
 {
     [SerializeField] private GameObject _trashPrefab;
@@ -25,7 +27,7 @@ public class Customer : MonoBehaviour
     private bool _hasFood;
     private bool _droppedTrash;
     private Vector3 _currentDestination;
-    private Vector3 _chosenBinDestination;
+    private Spawner _selectedBin;
 
     void Start()
     {
@@ -42,7 +44,7 @@ public class Customer : MonoBehaviour
         switch (_state)
         {
             case CustomerState.GoingToCashier:
-                CheckArrival(GameController.Instance._sellingPoint.transform.position, OnReachedCashier);
+                CheckArrival(GameController.Instance.sellingPoint.transform.position, OnReachedCashier);
                 break;
 
             case CustomerState.WaitingForFood:
@@ -50,17 +52,17 @@ public class Customer : MonoBehaviour
                 break;
 
             case CustomerState.GoingToExit:
-                CheckArrival(GameController.Instance._exitPoint.transform.position, OnReachedExit);
+                CheckArrival(GameController.Instance.exitPoint.transform.position, OnReachedExit);
                 HandleTrashLogic();
                 break;
 
             case CustomerState.GoingToBench:
-                CheckArrival(GameController.Instance._benchPoint.transform.position, OnReachedBench);
+                CheckArrival(GameController.Instance.benchPoint.transform.position, OnReachedBench);
                 HandleTrashLogic();
                 break;
 
             case CustomerState.GoingToTrashBin:
-                CheckArrival(_chosenBinDestination, OnReachedTrashBin);
+                CheckArrival(_selectedBin.transform.position, OnReachedTrashBin);
                 break;
         }
     }
@@ -68,8 +70,8 @@ public class Customer : MonoBehaviour
     void GoToCashier()
     {
         _state = CustomerState.GoingToCashier;
-        _agent.SetDestination(GameController.Instance._sellingPoint.transform.position);
-        _currentDestination = GameController.Instance._sellingPoint.transform.position;
+        _agent.SetDestination(GameController.Instance.sellingPoint.transform.position);
+        _currentDestination = GameController.Instance.sellingPoint.transform.position;
     }
 
     void OnReachedCashier()
@@ -79,26 +81,27 @@ public class Customer : MonoBehaviour
 
     void TryTakeFood()
     {
-        if (GameController.Instance._sellingPoint.TryTakeItem())
+        if (GameController.Instance.sellingPoint.TryTakeItem())
         {
+            GameController.Instance.CurrentMoney += GameController.Instance.moneyPerServing;
             _hasFood = true;
-            if (GameController.Instance._isTrashBinBuilt && GameController.Instance._isRecycleTrashBinBuilt)
+            if (GameController.Instance.isTrashBinBuilt && GameController.Instance.isRecycleTrashBinBuilt)
             {
                 if (Random.value < 0.5f)
                 {
-                    GoToTrashBin(GameController.Instance._trashBin.transform.position);
+                    GoToTrashBin(GameController.Instance.trashBin);
                 } else
                 {
-                    GoToTrashBin(GameController.Instance._recycleTrashBin.transform.position);
+                    GoToTrashBin(GameController.Instance.recycleTrashBin);
                 }
             } 
-            else if (GameController.Instance._isTrashBinBuilt)
+            else if (GameController.Instance.isTrashBinBuilt)
             {
-                GoToTrashBin(GameController.Instance._trashBin.transform.position);
+                GoToTrashBin(GameController.Instance.trashBin);
             } 
-            else if (GameController.Instance._isRecycleTrashBinBuilt)  
+            else if (GameController.Instance.isRecycleTrashBinBuilt)  
             {
-                GoToTrashBin(GameController.Instance._recycleTrashBin.transform.position);
+                GoToTrashBin(GameController.Instance.recycleTrashBin);
             }
              else if (GameController.Instance.CurrentPollution < 0.5f)
             {
@@ -112,8 +115,8 @@ public class Customer : MonoBehaviour
     void GoToExit()
     {
         _state = CustomerState.GoingToExit;
-        _agent.SetDestination(GameController.Instance._exitPoint.transform.position);
-        _currentDestination = GameController.Instance._exitPoint.transform.position;
+        _agent.SetDestination(GameController.Instance.exitPoint.transform.position);
+        _currentDestination = GameController.Instance.exitPoint.transform.position;
     }
 
     void HandleTrashLogic()
@@ -135,17 +138,17 @@ public class Customer : MonoBehaviour
         Instantiate(_trashPrefab, transform.position, Quaternion.identity);
     }
 
-    void GoToTrashBin(Vector3 binPosition)
+    void GoToTrashBin(Spawner bin)
     {
-        _chosenBinDestination = binPosition;
+        _selectedBin = bin;
         _state = CustomerState.GoingToTrashBin;
-        _agent.SetDestination(binPosition);
-        _currentDestination = binPosition;
+        _agent.SetDestination(_selectedBin.transform.position);
+        _currentDestination = _selectedBin.transform.position;
     }
 
     void OnReachedTrashBin()
     {
-        //_trashBin.AddTrash();
+        _selectedBin.RubbishCounter += 1;
         _hasFood = false;
 
         if (GameController.Instance.CurrentPollution < 0.5f && Random.value < 0.5f)
@@ -168,8 +171,8 @@ public class Customer : MonoBehaviour
     void GoToBench()
     {
         _state = CustomerState.GoingToBench;
-        _agent.SetDestination(GameController.Instance._benchPoint.transform.position);
-        _currentDestination = GameController.Instance._benchPoint.transform.position;
+        _agent.SetDestination(GameController.Instance.benchPoint.transform.position);
+        _currentDestination = GameController.Instance.benchPoint.transform.position;
     }
 
     void OnReachedBench()
