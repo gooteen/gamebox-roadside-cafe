@@ -14,6 +14,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private int _moneyCheckpoint; //  оличество денег в начале текущего круга
 
     public event System.Action<float> OnPollutionChanged;
+    public event System.Action<int> OnMoneyChanged;
+
+    public float roundDuration;
 
     public float decompositionCost;
     public float foodProductionCost;
@@ -54,6 +57,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private ScenePrefabCatalogSO _scenePrefabCatalog;
     [SerializeField] private Tilemap _groundTilemap;
 
+    private float _timer;
+
     public float CurrentPollution
     {
         get { return _currentPollution; }
@@ -76,6 +81,7 @@ public class GameController : MonoBehaviour
             _currentMoney = value;
             if (_currentMoney < 0)
                 _currentMoney = 0;
+            OnMoneyChanged?.Invoke(_currentMoney);
         }
     }
 
@@ -85,6 +91,15 @@ public class GameController : MonoBehaviour
     }
 
     public static GameController Instance { get; private set; }
+
+    private void Start()
+    {
+        _currentPollution = 0;
+        _pollutionCheckpoint = 0;
+
+        _currentMoney = 0;
+        _moneyCheckpoint = 0;
+    }
 
     void Awake()
     {
@@ -99,6 +114,16 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
+        _timer += Time.deltaTime;
+
+        if (_timer >= roundDuration)
+        {
+            UserInterfaceController.Instance.ShowScorePanel(_currentMoney - _moneyCheckpoint, _currentPollution - _pollutionCheckpoint, _currentPollution);
+            _pollutionCheckpoint = _currentPollution;
+            _moneyCheckpoint = _currentMoney;
+            _timer = 0f;
+        }
+
         HitResult hit = CursorDetector.Instance.Detect();
 
         CursorController.Instance.UpdateCursor(hit, PlayerController.Instance.gameObject.transform.position);

@@ -7,6 +7,7 @@ public class PickableItem : MonoBehaviour, IInteractable
     public ItemType type;
     [SerializeField] private float _interactDistance;
     [SerializeField] private float _decompositionTime;
+    [SerializeField] private Sprite _itemIcon;
     private System.Action _onDestroyed;
 
     public bool CanInteract(Vector3 fromPosition)
@@ -48,6 +49,7 @@ public class PickableItem : MonoBehaviour, IInteractable
                 break;
         }
         PlayerController.Instance.PickUp(objectToPickup, gameObject);
+        UserInterfaceController.Instance.Equip(_itemIcon);
     }
 
     public void Init(System.Action onDestroyedCallback)

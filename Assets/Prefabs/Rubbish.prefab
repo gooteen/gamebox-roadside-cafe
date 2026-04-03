@@ -101,6 +101,7 @@ MonoBehaviour:
   type: 6
   _interactDistance: 1
   _decompositionTime: 0
+  _itemIcon: {fileID: 21300000, guid: fffd2cd30e4ca2c478d382b5d8a256ac, type: 3}
 --- !u!61 &4442144578519992791
 BoxCollider2D:
   m_ObjectHideFlags: 0

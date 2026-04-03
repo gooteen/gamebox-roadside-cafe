@@ -147,6 +147,7 @@ MonoBehaviour:
   type: 0
   _interactDistance: 1
   _decompositionTime: 0
+  _itemIcon: {fileID: 21300000, guid: 5933fc1c136a8c64d87a6ae64132b34e, type: 3}
 --- !u!50 &825259991847812350
 Rigidbody2D:
   serializedVersion: 4

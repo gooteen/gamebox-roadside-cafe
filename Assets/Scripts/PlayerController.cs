@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
         {
             Instantiate(_objectInInventory, _offloadPoint.position, _offloadPoint.rotation);
             _objectInInventory = null;
+            UserInterfaceController.Instance.Unequip();
         }
     }
 

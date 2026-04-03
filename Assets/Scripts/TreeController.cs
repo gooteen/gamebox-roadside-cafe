@@ -20,7 +20,6 @@ public class TreeController : MonoBehaviour
     {
         HandlePollutionChanged(GameController.Instance.CurrentPollution);
         GameController.Instance.OnPollutionChanged += HandlePollutionChanged;
-
     }
 
     private void HandlePollutionChanged(float pollution)
