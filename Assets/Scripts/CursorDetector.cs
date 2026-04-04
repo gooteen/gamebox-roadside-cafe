@@ -22,23 +22,30 @@ public class CursorDetector : MonoBehaviour
 
     public HitResult Detect()
     {
-        Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        // Сначала проверяем интерактивные объекты (приоритет выше)
-        RaycastHit2D hitInteractable = Physics2D.Raycast(worldPos, Vector2.zero, Mathf.Infinity, _interactableLayer);
-        if (hitInteractable.collider != null)
+        // Если игра не на паузе (окно раундов)
+        if (Time.timeScale != 0f)
         {
-            return HitResult.Interactable(hitInteractable.collider);
-        }
+            Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        // Потом землю
-        RaycastHit2D hitGround = Physics2D.Raycast(worldPos, Vector2.zero, Mathf.Infinity, _groundLayer);
-        if (hitGround.collider != null)
+            // Сначала проверяем интерактивные объекты (приоритет выше)
+            RaycastHit2D hitInteractable = Physics2D.Raycast(worldPos, Vector2.zero, Mathf.Infinity, _interactableLayer);
+            if (hitInteractable.collider != null)
+            {
+                return HitResult.Interactable(hitInteractable.collider);
+            }
+
+            // Потом землю
+            RaycastHit2D hitGround = Physics2D.Raycast(worldPos, Vector2.zero, Mathf.Infinity, _groundLayer);
+            if (hitGround.collider != null)
+            {
+                return HitResult.Ground(hitGround.point);
+            }
+
+            return HitResult.None();
+        } else
         {
-            return HitResult.Ground(hitGround.point);
+            return HitResult.None();
         }
-
-        return HitResult.None();
     }
 }
 

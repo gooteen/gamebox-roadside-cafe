@@ -21,6 +21,9 @@ public class GameController : MonoBehaviour
     public float decompositionCost;
     public float foodProductionCost;
 
+    public float benchPollutionLevel;
+    public float secondOrderPollutionLevel;
+
     public int purifierPrice;
     public int regularTrashBinPrice;
     public int recycleTrashBinPrice;
@@ -68,7 +71,7 @@ public class GameController : MonoBehaviour
             if (_currentPollution < 0)
                 _currentPollution = 0;
             
-            _groundTilemap.color = new Color(_groundTilemap.color.r, (100f - _currentPollution) / 100f, _groundTilemap.color.b, _groundTilemap.color.a);
+            _groundTilemap.color = new Color(_groundTilemap.color.r, (groundPollutionLevel - _currentPollution) / 100f, _groundTilemap.color.b, _groundTilemap.color.a);
             OnPollutionChanged?.Invoke(_currentPollution);
         }
     }

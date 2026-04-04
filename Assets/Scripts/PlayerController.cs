@@ -96,5 +96,14 @@ public class PlayerController : MonoBehaviour
         {
             interactable.Interact();
         }
+
+        if (interactable.CanInteract(transform.position))
+        {
+            interactable.Interact();
+        }
+        else
+        {
+            MoveTo(interactable.GetInteractionPoint());
+        }
     }
 }

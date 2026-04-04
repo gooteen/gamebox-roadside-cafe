@@ -98,7 +98,7 @@ public class Customer : MonoBehaviour
         {
             GameController.Instance.CurrentMoney += GameController.Instance.moneyPerServing;
             _hasFood = true;
-            if (GameController.Instance.CurrentPollution < 50f)
+            if (GameController.Instance.CurrentPollution < GameController.Instance.benchPollutionLevel)
             {
                 GoToBench();
             } else
@@ -179,7 +179,7 @@ public class Customer : MonoBehaviour
 
     void OnReachedExit()
     {
-        if (GameController.Instance.CurrentPollution < 50f && Random.value < 0.5f)
+        if (GameController.Instance.CurrentPollution < GameController.Instance.secondOrderPollutionLevel && Random.value < 0.5f)
         {
             GoToCashier(); // повторная покупка
         } else

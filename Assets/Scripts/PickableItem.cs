@@ -52,6 +52,11 @@ public class PickableItem : MonoBehaviour, IInteractable
         UserInterfaceController.Instance.Equip(_itemIcon);
     }
 
+    public Vector3 GetInteractionPoint()
+    {
+        return transform.position;
+    }
+
     public void Init(System.Action onDestroyedCallback)
     {
         _onDestroyed = onDestroyedCallback;

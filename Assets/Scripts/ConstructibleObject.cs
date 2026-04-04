@@ -52,6 +52,11 @@ public class ConstructibleObject : MonoBehaviour, IInteractable
         }
     }
 
+    public Vector3 GetInteractionPoint()
+    {
+        return transform.position;
+    }
+
     void Start()
     {
         switch(_type)

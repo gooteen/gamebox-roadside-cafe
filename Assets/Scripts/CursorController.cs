@@ -30,14 +30,14 @@ public class CursorController : MonoBehaviour
                 break;
 
             case HitType.Interactable:
-                if (hit.InteractableObject != null && hit.InteractableObject.CanInteract(playerPos))
+                if (hit.InteractableObject != null)
                     SetCursor(interactCursor);
                 else
                     SetCursor(disabledCursor);
                 break;
 
             default:
-                SetCursor(null);
+                SetCursor(disabledCursor);
                 break;
         }
     }

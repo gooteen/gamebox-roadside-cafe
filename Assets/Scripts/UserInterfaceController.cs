@@ -15,6 +15,10 @@ public class UserInterfaceController : MonoBehaviour
     [SerializeField] private TMP_Text _moneyContainerElements;
     [SerializeField] private TMP_Text _pollutionContainerElements;
 
+    [SerializeField] private TMP_Text _binContainer;
+    [SerializeField] private TMP_Text _recycleBinContainer;
+    [SerializeField] private TMP_Text _purifyerContainer;
+
     [SerializeField] private Image _pollutionBar;
     [SerializeField] private Image _placeHolder;
 
@@ -65,6 +69,10 @@ public class UserInterfaceController : MonoBehaviour
         HandlePollutionChanged(0);
         HandleMoneyChanged(0);
 
+        _binContainer.text = $"- {GameController.Instance.regularTrashBinPrice}$";
+        _recycleBinContainer.text = $"- {GameController.Instance.recycleTrashBinPrice}$";
+        _purifyerContainer.text = $"- {GameController.Instance.purifierPrice}$";
+
         _scorePanel.SetActive(false);
         _elementsPanel.SetActive(true);
 
@@ -76,12 +84,14 @@ public class UserInterfaceController : MonoBehaviour
 
     private void HandlePollutionChanged(float pollution)
     {
-        _moneyContainerElements.text = pollution.ToString();
+        _pollutionContainerElements.text = pollution.ToString();
+
     }
 
     private void HandleMoneyChanged(int money)
     {
-        _pollutionContainerElements.text = money.ToString();
+        _moneyContainerElements.text = money.ToString();
+
     }
 
 }
