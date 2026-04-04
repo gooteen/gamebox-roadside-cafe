@@ -40,31 +40,44 @@ public class Customer : MonoBehaviour
 
     void Update()
     {
+        Vector2 dirToAnimate = Vector2.zero;
         _charAnim.AnimateDirection(_currentDestination - transform.position);
         switch (_state)
         {
             case CustomerState.GoingToCashier:
                 CheckArrival(GameController.Instance.sellingPoint.transform.position, OnReachedCashier);
+                dirToAnimate = _currentDestination - transform.position;
                 break;
 
             case CustomerState.WaitingForFood:
                 TryTakeFood();
+                dirToAnimate = Vector2.zero;
                 break;
 
             case CustomerState.GoingToExit:
                 CheckArrival(GameController.Instance.exitPoint.transform.position, OnReachedExit);
+                dirToAnimate = _currentDestination - transform.position;
                 HandleTrashLogic();
                 break;
 
             case CustomerState.GoingToBench:
                 CheckArrival(GameController.Instance.benchPoint.transform.position, OnReachedBench);
+                dirToAnimate = _currentDestination - transform.position;
                 HandleTrashLogic();
+                break;
+
+            case CustomerState.WaitingOnBench:
+                HandleTrashLogic();
+                dirToAnimate = Vector2.zero;
+
                 break;
 
             case CustomerState.GoingToTrashBin:
                 CheckArrival(_selectedBin.transform.position, OnReachedTrashBin);
+                dirToAnimate = _currentDestination - transform.position;
                 break;
         }
+        _charAnim.AnimateDirection(dirToAnimate);
     }
 
     void GoToCashier()
@@ -85,33 +98,43 @@ public class Customer : MonoBehaviour
         {
             GameController.Instance.CurrentMoney += GameController.Instance.moneyPerServing;
             _hasFood = true;
-            if (GameController.Instance.isTrashBinBuilt && GameController.Instance.isRecycleTrashBinBuilt)
-            {
-                if (Random.value < 0.5f)
-                {
-                    GoToTrashBin(GameController.Instance.trashBin);
-                } else
-                {
-                    GoToTrashBin(GameController.Instance.recycleTrashBin);
-                }
-            } 
-            else if (GameController.Instance.isTrashBinBuilt)
-            {
-                GoToTrashBin(GameController.Instance.trashBin);
-            } 
-            else if (GameController.Instance.isRecycleTrashBinBuilt)  
-            {
-                GoToTrashBin(GameController.Instance.recycleTrashBin);
-            }
-             else if (GameController.Instance.CurrentPollution < 0.5f)
+            if (GameController.Instance.CurrentPollution < 50f)
             {
                 GoToBench();
             } else
             {
-                GoToExit();
+                PickTrashBinRoute();
             }
         }
     }
+
+    void PickTrashBinRoute()
+    {
+        if (GameController.Instance.isTrashBinBuilt && GameController.Instance.isRecycleTrashBinBuilt)
+        {
+            if (Random.value < 0.5f)
+            {
+                GoToTrashBin(GameController.Instance.trashBin);
+            }
+            else
+            {
+                GoToTrashBin(GameController.Instance.recycleTrashBin);
+            }
+        }
+        else if (GameController.Instance.isTrashBinBuilt)
+        {
+            GoToTrashBin(GameController.Instance.trashBin);
+        }
+        else if (GameController.Instance.isRecycleTrashBinBuilt)
+        {
+            GoToTrashBin(GameController.Instance.recycleTrashBin);
+        }
+        else
+        {
+            GoToExit();
+        }
+    }
+
     void GoToExit()
     {
         _state = CustomerState.GoingToExit;
@@ -121,7 +144,7 @@ public class Customer : MonoBehaviour
 
     void HandleTrashLogic()
     {
-        if (!_hasFood || _droppedTrash)
+        if (!_hasFood || _droppedTrash || GameController.Instance.isTrashBinBuilt || GameController.Instance.isRecycleTrashBinBuilt)
             return;
 
         if (Random.value < 0.001f) // шанс каждый кадр
@@ -151,21 +174,18 @@ public class Customer : MonoBehaviour
         _selectedBin.RubbishCounter += 1;
         _hasFood = false;
 
-        if (GameController.Instance.CurrentPollution < 0.5f && Random.value < 0.5f)
-        {
-            GoToCashier(); // повторная покупка
-        } else if (GameController.Instance.CurrentPollution < 0.5f)
-        {
-            GoToBench();
-        } else
-        {
-            GoToExit();
-        }
+        GoToExit();
     }
 
     void OnReachedExit()
     {
-        Destroy(gameObject);
+        if (GameController.Instance.CurrentPollution < 50f && Random.value < 0.5f)
+        {
+            GoToCashier(); // повторная покупка
+        } else
+        {
+            Destroy(gameObject);
+        }
     }
 
     void GoToBench()
@@ -186,7 +206,13 @@ public class Customer : MonoBehaviour
 
         yield return new WaitForSeconds(5f);
 
-        GoToExit();
+        if (_hasFood)
+        {
+            PickTrashBinRoute();
+        } else
+        {
+            GoToExit();
+        }
     }
 
     void CheckArrival(Vector3 target, System.Action onArrive)
