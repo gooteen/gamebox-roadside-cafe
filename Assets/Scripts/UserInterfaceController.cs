@@ -43,13 +43,13 @@ public class UserInterfaceController : MonoBehaviour
 
     public void Equip(Sprite objectIcon)
     {
-        _placeHolder.enabled = true;
+        _placeHolder.gameObject.SetActive(true);
         _placeHolder.sprite = objectIcon;
     }
 
     public void Unequip()
     {
-        _placeHolder.enabled = false;
+        _placeHolder.gameObject.SetActive(false);
         _placeHolder.sprite = null;
     }
 
@@ -84,7 +84,7 @@ public class UserInterfaceController : MonoBehaviour
 
     private void HandlePollutionChanged(float pollution)
     {
-        _pollutionContainerElements.text = pollution.ToString();
+        _pollutionContainerElements.text = $"{pollution}/100";
 
     }
 

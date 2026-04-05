@@ -6,7 +6,6 @@ public class PickableItem : MonoBehaviour, IInteractable
 {
     public ItemType type;
     [SerializeField] private float _interactDistance;
-    [SerializeField] private float _decompositionTime;
     [SerializeField] private Sprite _itemIcon;
     private System.Action _onDestroyed;
 
