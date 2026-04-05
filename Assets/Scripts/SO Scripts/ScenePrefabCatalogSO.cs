@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Хранение актуальных префабов игры для динамического спавна
+
 [CreateAssetMenu(fileName = "Scene Prefab Catalog", menuName = "Scene Prefab Catalog")]
 public class ScenePrefabCatalogSO : ScriptableObject
 {

@@ -11,19 +11,26 @@ public enum SpawnerType
 {
     Kitchen,
     Garden,
-    Other
+    Customer,
+    Bin
 }
 
 
-// сделать наследование позже?
+/* 
+ * Общая логика спавна сущностей в игре. Работает в двух режимах:
+ * 
+ * TimerBased - спавнить сущность раз в заданный интервал времени
+ * ValueBased - спавнить сущность, когда счетчик достигает заданного значения
+ */
+
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private SpawnSlot[] _slots; 
     [SerializeField] private GameObject[] _prefabs;
     [SerializeField] private SpawnMode _mode;
     [SerializeField] private SpawnerType _type;
-    [SerializeField] private float _spawnInterval = 5f;
-    [SerializeField] private int _counterValueForSpawn = 5;
+    private float _spawnInterval;
+    private int _counterValueForSpawn;
 
     private float _timer;
     private int _rubbishCounter;
@@ -108,6 +115,26 @@ public class Spawner : MonoBehaviour
         if (_mode == SpawnMode.ValueBased)
         {
             _rubbishCounter = 0;
+            switch (_type)
+            {
+                case SpawnerType.Bin:
+                    _counterValueForSpawn = GameController.Instance.trashBagSpawnCount;
+                    break;
+            }
+        } else
+        {
+            switch (_type)
+            {
+                case SpawnerType.Garden:
+                    _spawnInterval = GameController.Instance.crateSpawnRate;
+                    break;
+                case SpawnerType.Customer:
+                    _spawnInterval = GameController.Instance.customerSpawnRate;
+                    break;
+                case SpawnerType.Kitchen:
+                    _spawnInterval = GameController.Instance.foodSpawnRate;
+                    break;
+            }
         }
     }
 

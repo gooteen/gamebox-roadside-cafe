@@ -60,7 +60,7 @@ MonoBehaviour:
   - {fileID: 1828266208827093098, guid: ed41bdcd3bfea3049a49eb24609484ad, type: 3}
   - {fileID: 8686714078615956529, guid: 55d684d2734728443bbe11825ecbc179, type: 3}
   _mode: 1
-  _type: 2
+  _type: 3
   _spawnInterval: 3
   _counterValueForSpawn: 5
 --- !u!212 &3354661291220437546

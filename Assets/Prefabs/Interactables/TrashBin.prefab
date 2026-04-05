@@ -151,7 +151,7 @@ MonoBehaviour:
   _prefabs:
   - {fileID: 6661466129529341542, guid: 69ca4c2b759a069488dca6786f885d52, type: 3}
   _mode: 1
-  _type: 2
+  _type: 3
   _spawnInterval: 3
   _counterValueForSpawn: 5
 --- !u!212 &8311021719957918661

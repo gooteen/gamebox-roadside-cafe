@@ -7289,22 +7289,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e235e36136fa16e43959d55ae4669ab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentPollution: 0
-  _pollutionCheckpoint: 0
-  _currentMoney: 0
-  _moneyCheckpoint: 0
   roundDuration: 180
   decompositionCost: 3
   foodProductionCost: 1
   benchPollutionLevel: 50
   secondOrderPollutionLevel: 50
-  purifierPrice: 40
-  regularTrashBinPrice: 20
-  recycleTrashBinPrice: 30
   cratePollutionLevel: 75
   groundPollutionLevel: 75
   squirellPollutionLevel: 50
   treePollutionLevel: 50
+  purifierPrice: 60
+  regularTrashBinPrice: 20
+  recycleTrashBinPrice: 60
   trashCollectionRate: 60
   regularTrashBagCollectionPrice: 5
   recycleTrashBagCollectionPrice: 1
@@ -7312,14 +7308,22 @@ MonoBehaviour:
   moneyPerCrate: 10
   rubbishTimeToDecompose: 5
   bagTimeToDecompose: 30
+  crateSpawnRate: 20
+  customerSpawnRate: 5
+  foodSpawnRate: 5
+  trashBagSpawnCount: 5
   isPurifierBuilt: 0
   isTrashBinBuilt: 0
-  trashBin: {fileID: 0}
   isRecycleTrashBinBuilt: 0
-  recycleTrashBin: {fileID: 0}
   benchPoint: {fileID: 257347777}
   exitPoint: {fileID: 1282517563}
   sellingPoint: {fileID: 1664228443}
+  recycleTrashBin: {fileID: 0}
+  trashBin: {fileID: 0}
+  _currentPollution: 0
+  _pollutionCheckpoint: 0
+  _currentMoney: 0
+  _moneyCheckpoint: 0
   _scenePrefabCatalog: {fileID: 11400000, guid: f309853ff8cd8c54f929fa869f65d15b, type: 2}
   _groundTilemap: {fileID: 844007110}
 --- !u!1 &1760768339

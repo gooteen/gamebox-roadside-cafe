@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Стройкплощадка. При взаимодействии создаёт соответствующий тип постройки
+
 public enum ConstructionType
 {
     RegularTrashBin,
@@ -20,7 +22,6 @@ public class ConstructibleObject : MonoBehaviour, IInteractable
     {
         if ((transform.position - fromPosition).magnitude >= _interactDistance)
         {
-            Debug.Log("NEA");
             return false;
         }
         else

@@ -5,57 +5,64 @@ using UnityEngine.Tilemaps;
 
 public class GameController : MonoBehaviour
 {
-    // Добавить красивые хэдеры и свойства
+    // Главная точка обработки логики игры + вынесенные глобальные переменные для гибкого геймдизайна
+
+    public event System.Action<float> OnPollutionChanged; // Событие, срабатывающее при изменении счетчика загрязнения
+    public event System.Action<int> OnMoneyChanged; // Событие, срабатывающее при изменении счетчика денег
+
+    public float roundDuration;
+
+    [Header("Урон загрязнением")]
+    public float decompositionCost;
+    public float foodProductionCost;
+
+    [Header("Крит. значения загрязнения")]
+    public float benchPollutionLevel; 
+    public float secondOrderPollutionLevel;
+    public float cratePollutionLevel;
+    public float groundPollutionLevel;
+    public float squirellPollutionLevel;
+    public float treePollutionLevel;
+
+    [Header("Стоимость построек")]
+    public int purifierPrice;
+    public int regularTrashBinPrice;
+    public int recycleTrashBinPrice;
+
+    [Header("Параметры мусоровоза")]
+    public float trashCollectionRate; 
+    public int regularTrashBagCollectionPrice;
+    public int recycleTrashBagCollectionPrice;
+
+    [Header("Прибыль от действий")]
+    public int moneyPerServing;
+    public int moneyPerCrate;
+
+    [Header("Скорость разложения мусора")]
+    public float rubbishTimeToDecompose;
+    public float bagTimeToDecompose;
+
+    [Header("Настройки спавнеров")]
+    public float crateSpawnRate;
+    public float customerSpawnRate;
+    public float foodSpawnRate;
+    public int trashBagSpawnCount;
+
+    [Header("Технические параметры")]
+    public bool isPurifierBuilt;
+    public bool isTrashBinBuilt;
+    public bool isRecycleTrashBinBuilt;
+    public Transform benchPoint;
+    public Transform exitPoint;
+    public Spawner sellingPoint;
+    public Spawner recycleTrashBin;
+    public Spawner trashBin;
 
     [SerializeField] private float _currentPollution;
     [SerializeField] private float _pollutionCheckpoint; // Степень загрязнения в начале текущего круга
 
     [SerializeField] private int _currentMoney;
     [SerializeField] private int _moneyCheckpoint; // Количество денег в начале текущего круга
-
-    public event System.Action<float> OnPollutionChanged;
-    public event System.Action<int> OnMoneyChanged;
-
-    public float roundDuration;
-
-    public float decompositionCost;
-    public float foodProductionCost;
-
-    public float benchPollutionLevel;
-    public float secondOrderPollutionLevel;
-
-    public int purifierPrice;
-    public int regularTrashBinPrice;
-    public int recycleTrashBinPrice;
-
-    public float cratePollutionLevel;
-    public float groundPollutionLevel;
-
-    public float squirellPollutionLevel;
-    public float treePollutionLevel;
-
-    public float trashCollectionRate;
-    public int regularTrashBagCollectionPrice;
-    public int recycleTrashBagCollectionPrice;
-
-    public int moneyPerServing;
-    public int moneyPerCrate;
-
-    public float rubbishTimeToDecompose;
-    public float bagTimeToDecompose;
-    
-    public bool isPurifierBuilt;
-
-    public bool isTrashBinBuilt;
-    public Spawner trashBin;
-
-    public bool isRecycleTrashBinBuilt;
-    public Spawner recycleTrashBin;
-
-    public Transform benchPoint;
-    public Transform exitPoint;
-
-    public Spawner sellingPoint;
 
     [SerializeField] private ScenePrefabCatalogSO _scenePrefabCatalog;
     [SerializeField] private Tilemap _groundTilemap;

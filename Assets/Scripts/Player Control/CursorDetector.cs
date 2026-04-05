@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Обработка попадания Raytrace-лучей из курсора по игровому миру
+
 public class CursorDetector : MonoBehaviour
 {
     [SerializeField] private LayerMask _groundLayer;

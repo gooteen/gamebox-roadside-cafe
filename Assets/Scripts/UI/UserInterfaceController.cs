@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/* 
+ * Обработка событий UI на основной сцене. 
+ * Обновление счетчиков загрязнения и денег реализованы асинхронно через события 
+ */
+
 public class UserInterfaceController : MonoBehaviour
 {
     [SerializeField] private GameObject _scorePanel;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+// State-машина для реализации логики поведения покупателей
+
 public enum CustomerState
 {
     GoingToCashier,
@@ -12,8 +14,6 @@ public enum CustomerState
     WaitingOnBench,
     GoingToTrashBin
 }
-
-// Вынести харкдод в GameController
 
 public class Customer : MonoBehaviour
 {
@@ -31,6 +31,7 @@ public class Customer : MonoBehaviour
 
     void Start()
     {
+        // Нацелиться на кассу
         _currentDestination = transform.position;
         _agent = GetComponent<NavMeshAgent>();
         _agent.updateRotation = false;
@@ -65,7 +66,8 @@ public class Customer : MonoBehaviour
                 dirToAnimate = _currentDestination - transform.position;
                 HandleTrashLogic();
                 break;
-
+            
+            // Режим "ожидания", если на кассе нет еды
             case CustomerState.WaitingOnBench:
                 HandleTrashLogic();
                 dirToAnimate = Vector2.zero;
@@ -100,7 +102,7 @@ public class Customer : MonoBehaviour
             _hasFood = true;
             if (GameController.Instance.CurrentPollution < GameController.Instance.benchPollutionLevel)
             {
-                GoToBench();
+                GoToBench(); // Пойти к скамейке, если условия выполняются
             } else
             {
                 PickTrashBinRoute();
@@ -108,6 +110,7 @@ public class Customer : MonoBehaviour
         }
     }
 
+    // При наличии одной из мусорок пойти к ним, иначе - к выходу
     void PickTrashBinRoute()
     {
         if (GameController.Instance.isTrashBinBuilt && GameController.Instance.isRecycleTrashBinBuilt)
@@ -142,12 +145,13 @@ public class Customer : MonoBehaviour
         _currentDestination = GameController.Instance.exitPoint.transform.position;
     }
 
+    // Оставить мелкий мусор, если условия выполняются
     void HandleTrashLogic()
     {
         if (!_hasFood || _droppedTrash || GameController.Instance.isTrashBinBuilt || GameController.Instance.isRecycleTrashBinBuilt)
             return;
 
-        if (Random.value < 0.001f) // шанс каждый кадр
+        if (Random.value < 0.001f) // Шанс оставить мусор каждый кадр
         {
             DropTrash();
         }
@@ -181,7 +185,7 @@ public class Customer : MonoBehaviour
     {
         if (GameController.Instance.CurrentPollution < GameController.Instance.secondOrderPollutionLevel && Random.value < 0.5f)
         {
-            GoToCashier(); // повторная покупка
+            GoToCashier(); // Выполнить повторную покупку, если условия выполняются
         } else
         {
             Destroy(gameObject);
@@ -215,6 +219,7 @@ public class Customer : MonoBehaviour
         }
     }
 
+    // Универсальный метод для обработки "прибытия" к точке
     void CheckArrival(Vector3 target, System.Action onArrive)
     {
         if (!_agent.pathPending && _agent.remainingDistance < 0.2f)

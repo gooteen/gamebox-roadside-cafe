@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+// Логика поведения игрового персонажа
+
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _movementSpeed;
