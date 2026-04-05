@@ -7300,7 +7300,7 @@ MonoBehaviour:
   treePollutionLevel: 50
   purifierPrice: 60
   regularTrashBinPrice: 20
-  recycleTrashBinPrice: 60
+  recycleTrashBinPrice: 40
   trashCollectionRate: 60
   regularTrashBagCollectionPrice: 5
   recycleTrashBagCollectionPrice: 1
